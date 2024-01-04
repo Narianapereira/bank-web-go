@@ -1,16 +1,18 @@
 package accounts
 
+import "github.com/bank-web-go/clients"
+
 type BankAccount struct {
-	Owner   string
+	Owner   clients.Owner
 	Agency  int
 	Account int
-	Balance float64
+	balance float64
 }
 
 func (c *BankAccount) GetCash(cashValue float64) string {
-	canGetCash := cashValue > 0 && cashValue <= c.Balance
+	canGetCash := cashValue > 0 && cashValue <= c.balance
 	if canGetCash {
-		c.Balance -= cashValue
+		c.balance -= cashValue
 		return "Cashed success"
 	} else {
 		return "Not enough balance"
@@ -19,21 +21,25 @@ func (c *BankAccount) GetCash(cashValue float64) string {
 
 func (c *BankAccount) DepositCash(cashValue float64) (string, float64) {
 	if cashValue > 0 {
-		c.Balance += cashValue
-		return "Deposit success", c.Balance
+		c.balance += cashValue
+		return "Deposit success", c.balance
 	} else {
-		return "Ivalid deposit", c.Balance
+		return "Ivalid deposit", c.balance
 	}
 
 }
 
 func (c *BankAccount) Transfer(cashValue float64, accountToTransfer *BankAccount) (string, float64) {
-	if c.Balance >= cashValue && cashValue > 0 {
-		c.Balance -= cashValue
+	if c.balance >= cashValue && cashValue > 0 {
+		c.balance -= cashValue
 		accountToTransfer.DepositCash(cashValue)
-		return "Transfer success", c.Balance
+		return "Transfer success", c.balance
 	} else {
-		return "Invalid balance", c.Balance
+		return "Invalid balance", c.balance
 	}
 
+}
+
+func (c *BankAccount) GetBalance() float64 {
+	return c.balance
 }

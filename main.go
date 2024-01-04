@@ -4,12 +4,14 @@ import (
 	"fmt"
 
 	"github.com/bank-web-go/accounts"
+	"github.com/bank-web-go/clients"
 )
 
 func main() {
-	myAccount := accounts.BankAccount{"Nariana", 0000, 111111, 900}
-	accountToTransfer := accounts.BankAccount{"Kleber", 0001, 1111112, 500}
+	myClient := clients.Owner{Name: "Nariana", CPF: "08731393993", Occupation: "Desenvolvdora"}
+	myAccount := accounts.SavingsAccount{Owner: myClient, Agency: 0001,
+		Account: 12321323, Operation: 10}
 
-	fmt.Println(myAccount.Transfer(950, &accountToTransfer))
-	fmt.Println(accountToTransfer.Balance)
+	fmt.Println(myAccount)
+
 }
